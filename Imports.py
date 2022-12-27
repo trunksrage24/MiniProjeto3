@@ -13,9 +13,15 @@ FORESTGREEN=(34,139,34)
 WATERBLUE=(65,105,225)
 #font usada nos butões e Logo em Menu /// e textos e respetivos descrições
 smallfont = pygame.font.SysFont("Corbel",45,True)
+gmfont=pygame.font.SysFont("Corbel",60,True)
 textHO = smallfont.render("Heavy Ordnance" , True , WHITE)
 textstart = smallfont.render("Start" , True , RED)
 textquit = smallfont.render("Quit" , True , RED)
+
+textgameover = gmfont.render("Game Over" , True , RED)
+textpont = smallfont.render("Points: " , True , RED)
+textname = smallfont.render("Name: " , True , RED)
+
 #coordenadas dos butões
 start_but=pygame.Rect(290,200,190,70)
 exit_but=pygame.Rect(550,200,190,70)
