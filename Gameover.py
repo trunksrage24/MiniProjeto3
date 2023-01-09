@@ -34,16 +34,16 @@ def gameoverfunc():
         text_surf = font.render(text, False, (255, 0, 0))
        
         pygame.draw.rect(SCREEN,(0,0,0),(525,220,500,70))
-        pygame.draw.rect(SCREEN,color_shade,(525,220,190,70)) 
-        SCREEN.blit(text_surf,(530,220))
+        pygame.draw.rect(SCREEN,color_shade,(480,220,240,70)) 
+        SCREEN.blit(text_surf,(480,220))
         pygame.display.flip()
         
        
                     
         SCREEN.blit(textgameover,(360,60))
         #texto de Pontuação do jogador
-        SCREEN.blit(textpont,(390,150))
-        SCREEN.blit(textname,(390,220))
+        SCREEN.blit(textpont,(300,150))
+        SCREEN.blit(textname,(300,220))
         #highlight text
         #SCREEN.blit(textstart,(330,210))
         
