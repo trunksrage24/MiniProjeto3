@@ -1,117 +1,62 @@
 # player program
 
-import pygame as py
-import sys
-import math
-import numpy as np
-import time
+import sys, pygame, math
+from pygame.locals import *
 
-#init py
-py.init()
+# set up a bunch of constants
+WHITE    = (255, 255, 255)
+BLACK    = (  0,   0,   0)
+BROWN    = (139,  69,  19)
+DARKGRAY = (128, 128, 128)
 
-#colors
-White = (255, 255, 255)
-Black = (0, 0, 0)
-Red = (235, 25, 25)
-Green = (25, 235, 25)
-Blue = (25, 25, 235)
-Yellow = (255, 255, 0)
-Steel = (176, 196, 222)
+WINDOWWIDTH = 1000 # width of the program's window, in pixels
+WINDOWHEIGHT = 380 # height in pixels
 
-# game surface
-Window = py.display.set_mode((1000, 380))
+FPS = 60
 
-# Cannon class
-class Cannon:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-        self.dx = 0
-        self.dy = 0
-        self.image = py.image.load("sprites/Cannon.png")
-    
-    def aim(self, mouse_x, mouse_y):
-        # Set the cannon's velocity based on the mouse position
-        self.dx = mouse_x - self.x
-        self.dy = mouse_y - self.y
-    
-    def fire(self):
-        # Create a new projectile and set its velocity based on the cannon's velocity
-        projectile = Projectile(self.x, self.y)
-        projectile.dx = self.dx
-        projectile.dy = self.dy
-        return projectile
+# standard pygame setup code
+pygame.init()
+FPSCLOCK = pygame.time.Clock()
+Window = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
+pygame.display.set_caption("Mini Projeto 3")
 
-# Projectile class
-class Projectile:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-        self.dx = 0
-        self.dy = 0
-        self.image = py.image.load('projectile.png')
-    
-    def move(self):
-        self.x += self.dx
-        self.y += self.dy
+# draw the base cannon image
+cannonIm = pygame.image.load("sprites/Cannon.png")
+# draw the base background image
+Background = pygame.image.load("sprites/Background.png").convert()
 
-# Create an instance of the cannon
-cannon = Cannon(100, 100)
+def getAngle(x1, y1, x2, y2):
+    # Return value is 0 for right, 90 for up, 180 for left, and 270 for down (and all values between 0 and 360)
+    rise = y1 - y2
+    run = x1 - x2
+    angle = math.atan2(run, rise) # get the angle in radians
+    angle = angle * (180 / math.pi) # convert to degrees
+    angle = (angle + 90) % 360 # adjust for a right-facing sprite
+    return angle
 
-# Set up a list to store the projectiles
-projectiles = []
 
-# Set the gravity constant
-gravity = 0.1
-
-# Set up the walls as rectangles
-wall1 = py.Rect(200, 200, 100, 100)
-wall2 = py.Rect(400, 400, 100, 100)
-
-# Set score and timer text
-font = py.font.Font(None, 36)
-
-# Set the starting score and time
-score = 0
-time = 60
-
-# Main game loop
+# main application loop
 while True:
-    for event in py.event.get():
-        if event.type == py.QUIT:
-            py.quit()
+    # event handling loop for quit events
+    for event in pygame.event.get():
+        if event.type == QUIT or (event.type == KEYUP and event.key == K_ESCAPE):
+            pygame.quit()
             sys.exit()
-        # Check for mouse movement
-        elif event.type == py.MOUSEMOTION:
-            mouse_x, mouse_y = event.pos
-            cannon.aim(mouse_x, mouse_y)
-        # Check for mouse clicks
-        elif event.type == py.MOUSEBUTTONDOWN:
-            mouse_x, mouse_y = event.pos
-            cannon.aim(mouse_x, mouse_y)
-            # Fire a projectile when the mouse is clicked
-            projectile = cannon.fire()
-            projectiles.append(projectile)
 
-    # Move and check for collisions for each projectile
-    for projectile in projectiles:
-        # Check for collisions with the walls
-        if projectile.rect.colliderect(wall1) or projectile.rect.colliderect(wall2):
-            # Increase the score if the projectile hits wall 1
-            score += 1
-            # Reverse the projectile's velocity if it hits a wall
-            projectile.dx *= -1
-            projectile.dy *= -1
-        
-    # Apply gravity to the projectile's motion
-    projectile.dy += gravity
+    cannonIm.blit(Window, (40, 245))
+    Window.blit(Background, (0, 0))
 
-    # Move the projectile
-    projectile.move()
+    # draw the cannons pointed at the mouse cursor
+    mousex, mousey = pygame.mouse.get_pos()
+    for cannonx, cannony in ((40, 245), (40, 245)):
 
-    # Draw the cannon and projectile
-    Window.blit(cannon.image, (cannon.x, cannon.y))
-    Window.blit(projectile.image, (projectile.x, projectile.y))
+        degrees = getAngle(cannonx, cannony, mousex, mousey)
 
-    py.display.flip()
+        # rotate a copy of the cannon image and draw it
+        rotatedSurf = pygame.transform.rotate(cannonIm, degrees)
+        rotatedRect = rotatedSurf.get_rect()
+        rotatedRect.center = (cannonx, cannony)
+        Window.blit(rotatedSurf, rotatedRect)
 
+    pygame.display.update()
+    FPSCLOCK.tick(FPS)
