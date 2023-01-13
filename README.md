@@ -7,12 +7,15 @@ Trabalho realizado por:
 #
 
 ## Vitor:
- - fvdvdf
+ - desenhou imagens
+ - criou canhao e bala (bala ainda n esta completa no codigo)
+ - (vou criar pontuaçao)
 
 #
 
 ## João:
- - sdvdf
+ - criou codigo barcos
+ - criou menus
 
 #
 
