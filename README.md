@@ -15,8 +15,10 @@ Trabalho realizado por:
 
 ## João:
  - criou codigo barcos
- - criou menus
-
+ - criou menu inicial
+ - fez parte do relatório
+ - criou visual inicial do jogo
+ - criou menu de "gameover"
 #
 
 ### Repositório GitHub - https://github.com/trunksrage24/MiniProjeto3
