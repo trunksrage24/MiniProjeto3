@@ -30,8 +30,7 @@ class GameObject():
                 i.update()
                 pygame.draw.rect(myscreen,RED,(i.x,i.y, i.size, 30))
                
-                
-    
+            
 class ship():
     const_vel=0.5
     init_x=1100
